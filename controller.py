@@ -1,5 +1,10 @@
 from view import *
 
+from pytubefix import YouTube
+from moviepy.editor import AudioFileClip, VideoFileClip
+import shutil
+import os
+
 class Controller:
     def __init__(self, master):
         self.view = View(master)
@@ -13,28 +18,41 @@ class Controller:
         for j in filter(lambda s: Controller.get_resolution(s), filter(lambda s: s.type == 'video', file.streams)):
             lista.append(j)
         lista.sort(key=Controller.get_resolution, reverse=True)
+        for j in lista:
+            if j.mime_type == "video/webm":
+                lista.remove(j)
         return lista
     
-    def download_ambos(file):
-        video = max(
-            filter(lambda s: Controller.get_resolution(s) <= 1080,
-                filter(lambda s: s.type == 'video', file.streams)),
-            key=Controller.get_resolution
-        )
-
+    def download_ambos(file, itag, bvideo, baudio, name):
+        file=YouTube(file)
+        
+        video = file.streams.get_by_itag(itag)
         audio = file.streams.get_audio_only()
 
-        video.download('cache', filename='teste.mp4')
-        audio.download('cache',filename='teste1.mp3')
+        if bvideo and baudio:
+            video.download('cache', filename='teste.mp4')
+            audio.download('cache',filename='teste1.mp3')
 
-        if not os.path.exists('final'):
-            os.makedirs('final')
+            if not os.path.exists('final'):
+                os.makedirs('final')
 
-        name='final/' + input("Nome do video: ") + '.mp4'
+            name='final/' + name + '.mp4'
 
-        audio = AudioFileClip('cache/teste1.mp3')
-        video = VideoFileClip('cache/teste.mp4')
-        final_clip = video.set_audio(audio)
-        final_clip.write_videofile(filename= name, codec='libx264')
+            audio = AudioFileClip('cache/teste1.mp3')
+            video = VideoFileClip('cache/teste.mp4')
+            final_clip = video.set_audio(audio)
+            final_clip.write_videofile(filename= name, codec='libx264')
 
-        shutil.rmtree('cache')
+            shutil.rmtree('cache')
+
+        elif bvideo:
+            if not os.path.exists('final'):
+                os.makedirs('final')
+
+            video.download('final', filename=name+'.mp4')
+
+        elif baudio:
+            if not os.path.exists('final'):
+                os.makedirs('final')
+
+            audio.download('final',filename=name+'.mp3')
