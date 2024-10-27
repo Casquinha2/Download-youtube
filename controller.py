@@ -49,10 +49,7 @@ class Controller:
             if not os.path.exists('final'):
                 os.makedirs('final')
 
-            video.download('final', filename=name+'.mp4')
 
         elif baudio:
             if not os.path.exists('final'):
                 os.makedirs('final')
-
-            audio.download('final',filename=name+'.mp3')
