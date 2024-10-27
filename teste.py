@@ -1,6 +1,8 @@
 from pytubefix import YouTube
 from moviepy.editor import AudioFileClip, VideoFileClip
 import shutil
+import os
+
 
 file = YouTube(input("Introduza o seu video: "))
 
@@ -19,9 +21,15 @@ audio = file.streams.get_audio_only()
 video.download('cache', filename='teste.mp4')
 audio.download('cache',filename='teste1.mp3')
 
+if not os.path.exists('final'):
+    os.makedirs('final')
+
+name='final/' + "Nnome" + '.mp4'
+
 audio = AudioFileClip('cache/teste1.mp3')
 video = VideoFileClip('cache/teste.mp4')
 final_clip = video.set_audio(audio)
-final_clip.write_videofile('videocomsom.mp4', codec='libx264')
+final_clip.write_videofile(filename= name, codec='libx264')
+
 
 shutil.rmtree('cache')
