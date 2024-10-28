@@ -93,17 +93,13 @@ class View:
         if opcion:
             opcion = self.listbox.get(opcion)
         
-        print(f"ESTA FOI A OPCAO {opcion}")
 
         for j in self.lista:
             correto = f'''res: {j.resolution}; {str(j.fps)}fps; {j.mime_type}; vcodec: "{j.video_codec}"'''
             if opcion == correto:
-                print("EESTEEEEEEEEE")
                 for i in YouTube(self.file).streams:
                     if j.resolution == i.resolution and j.fps == i.fps and j.mime_type == i.mime_type and j.video_codec == i.video_codec:
                         itag = i.itag
-
-        print(itag)
 
         Controller.Controller.download_ambos(self.file, itag, self.bvideo, self.baudio, self.name.get())
 

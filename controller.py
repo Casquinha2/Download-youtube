@@ -36,7 +36,11 @@ class Controller:
             if not os.path.exists('final'):
                 os.makedirs('final')
 
-            name='final/' + name + '.mp4'
+            if name == "":
+                name = str(file.title)
+                name = 'final/' + name + '.mp4'
+            else:
+                name='final/' + name + '.mp4'
 
             audio = AudioFileClip('cache/teste1.mp3')
             video = VideoFileClip('cache/teste.mp4')

@@ -4,12 +4,29 @@ import shutil
 import os
 
 
-file = YouTube(input("Introduza o seu video: "))
+file = YouTube("https://www.youtube.com/watch?v=93yk6RoTc2Y")
 
 def get_resolution(s):
     return int(s.resolution[:-1])
 
+name = str(file.title)
 
+print(name)
+
+
+temp = ""
+
+for a in name:
+    if a == ' ':
+        continue
+    else:
+        temp += a
+        ##
+name = temp
+
+print("Resultado:  "+ name)
+
+'''
 video = max(
     filter(lambda s: get_resolution(s) <= 1080,
            filter(lambda s: s.type == 'video', file.streams)),
@@ -33,3 +50,4 @@ final_clip.write_videofile(filename= name, codec='libx264')
 
 
 shutil.rmtree('cache')
+'''
