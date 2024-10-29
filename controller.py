@@ -12,6 +12,9 @@ class Controller:
     def get_resolution(s):
         return int(s.resolution[:-1])
     
+    def get_quality(s):
+        return int(s.resolution[:-1])
+    
     def list_res(file):
         file=YouTube(file)
         lista=[]
@@ -20,6 +23,17 @@ class Controller:
         lista.sort(key=Controller.get_resolution, reverse=True)
         for j in lista:
             if j.mime_type == "video/webm":
+                lista.remove(j)
+        return lista
+    
+    def list_res_audio(file):
+        file=YouTube(file)
+        lista=[]
+        for j in filter(lambda s: Controller.get_quality(s), filter(lambda s: s.type == 'audio', file.streams)):
+            lista.append(j)
+        lista.sort(key=Controller.get_resolution, reverse=True)
+        for j in lista:
+            if j.mime_type == "audio/webm":
                 lista.remove(j)
         return lista
     

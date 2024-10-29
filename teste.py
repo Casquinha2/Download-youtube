@@ -7,13 +7,36 @@ import os
 file = YouTube("https://www.youtube.com/watch?v=93yk6RoTc2Y")
 
 def get_resolution(s):
-    return int(s.resolution[:-1])
+    return int(s.resolution)
 
 name = str(file.title)
 
-print(name)
 
 
+
+def list_res(file):
+        lista=[]
+        for j in filter(lambda s:get_resolution(s), filter(lambda s: s.type == 'audio', file.streams)):
+            lista.append(j)
+        lista.sort(key=get_resolution, reverse=True)
+        for j in lista:
+            if j.mime_type == "audio/webm":
+                lista.remove(j)
+        return lista
+
+
+
+lista = list_res(file)
+
+
+for i in file.streams:
+    print(i)
+
+
+##print(file.streams.get_audio_only())
+
+
+'''
 temp = ""
 
 for a in name:
@@ -26,7 +49,7 @@ name = temp
 
 print("Resultado:  "+ name)
 
-'''
+
 video = max(
     filter(lambda s: get_resolution(s) <= 1080,
            filter(lambda s: s.type == 'video', file.streams)),

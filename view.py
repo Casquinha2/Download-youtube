@@ -81,8 +81,46 @@ class View:
         self.bvideo = True
         self.baudio = True
 
-    def audio(self):
-        return None
+    def audio(self):   ##fazer isto em casa!!!
+        self.file = self.texto.get()
+        self.lista = Controller.Controller.list_res_audio(self.file)
+
+        self.nova_janela = tk.Toplevel(self.master)
+
+        frame1 = tk.Frame(self.nova_janela, width=960, height=600, bg='#FFFFFF')
+        frame1.pack_propagate(False)
+        frame1.pack()
+        
+        #listbox
+        self.listbox = tk.Listbox(frame1, width= 50, height= 20)
+
+        #botao
+        botao = tk.Button(frame1, text="Selecionar qualidade", width= 25, height=5, command=self.download)
+
+        #Text box
+        self.name = tk.Entry(frame1, width=100)
+
+        #label
+        label = tk.Label(frame1, text="Nome do ficheiro",font=('areal black',13), bg='#FFFFFF')
+
+        #set listbox
+        i=1
+        for j in self.lista:
+            res = f'''res: {j.resolution}; {str(j.fps)}fps; {j.mime_type}; vcodec: "{j.video_codec}"'''
+            self.listbox.insert(i, res)
+            i+=1
+        
+        #packs
+        self.listbox.place(x=480, y=200, anchor=tk.CENTER)
+        label.place(x=480, y=400, anchor=tk.CENTER)
+        self.name.place(x=480, y=450, anchor=tk.CENTER)
+        botao.place(x=480, y = 525, anchor=tk.CENTER)
+
+        #var
+        self.bvideo = True
+        self.baudio = True
+
+
     
     def video(self):
         return None
