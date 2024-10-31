@@ -12,8 +12,8 @@ class Controller:
     def get_resolution(s):
         return int(s.resolution[:-1])
     
-    def get_quality(s):
-        return int(s.resolution[:-1])
+    def get_abr(s):
+        return int(s.abr.replace('kbps', ''))
     
     def list_res(file):
         file=YouTube(file)
@@ -29,19 +29,22 @@ class Controller:
     def list_res_audio(file):
         file=YouTube(file)
         lista=[]
-        for j in filter(lambda s: Controller.get_quality(s), filter(lambda s: s.type == 'audio', file.streams)):
+        for j in filter(lambda s: Controller.get_abr(s), filter(lambda s: s.type == 'audio', file.streams)):
             lista.append(j)
-        lista.sort(key=Controller.get_resolution, reverse=True)
-        for j in lista:
-            if j.mime_type == "audio/webm":
-                lista.remove(j)
+        lista.sort(key=Controller.get_abr, reverse=True)
         return lista
     
-    def download_ambos(file, itag, bvideo, baudio, name):
+    def download_ambos(file, itagvideo, itagaudio, bvideo, baudio, name):
         file=YouTube(file)
         
-        video = file.streams.get_by_itag(itag)
-        audio = file.streams.get_audio_only()
+        if itagvideo != None:
+            video = file.streams.get_by_itag(itagvideo)
+        if itagaudio == None:
+            audio = file.streams.get_audio_only()
+        else:
+            audio = file.streams.get_by_itag(itagaudio)
+         
+        
 
         if bvideo and baudio:
             video.download('cache', filename='teste.mp4')
@@ -66,8 +69,19 @@ class Controller:
         elif bvideo:
             if not os.path.exists('final'):
                 os.makedirs('final')
+            
+            name = name + '.mp4'
+
+            video.download('final', filename=name)
 
 
         elif baudio:
             if not os.path.exists('final'):
                 os.makedirs('final')
+            
+            name = name + '.mp3'
+
+            audio.download('final', filename=name)
+    
+    def download_audio(file): ##acabar casa
+        file.video

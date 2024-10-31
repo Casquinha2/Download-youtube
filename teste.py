@@ -1,16 +1,19 @@
-from pytubefix import YouTube
+from pytubefix import YouTube, Playlist
 from moviepy.editor import AudioFileClip, VideoFileClip
 import shutil
 import os
 
 
-file = YouTube("https://www.youtube.com/watch?v=93yk6RoTc2Y")
+file = Playlist("https://youtube.com/playlist?list=PLeFKoQ75KesBk7F1sJGSG5hEiPcw55L8t&si=NSrWYMYoCIuy_VDe")
 
 def get_resolution(s):
-    return int(s.resolution)
+    return int(s.abr.replace('kbps', ''))
 
+
+print(file)
+
+'''
 name = str(file.title)
-
 
 
 
@@ -19,9 +22,6 @@ def list_res(file):
         for j in filter(lambda s:get_resolution(s), filter(lambda s: s.type == 'audio', file.streams)):
             lista.append(j)
         lista.sort(key=get_resolution, reverse=True)
-        for j in lista:
-            if j.mime_type == "audio/webm":
-                lista.remove(j)
         return lista
 
 
@@ -36,7 +36,6 @@ for i in file.streams:
 ##print(file.streams.get_audio_only())
 
 
-'''
 temp = ""
 
 for a in name:
