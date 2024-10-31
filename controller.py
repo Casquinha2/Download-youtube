@@ -8,6 +8,7 @@ import os
 class Controller:
     def __init__(self, master):
         self.view = View(master)
+        self.playlist_count = 0
 
     def get_resolution(s):
         return int(s.resolution[:-1])
@@ -55,9 +56,7 @@ class Controller:
 
             if name == "":
                 name = str(file.title)
-                name = 'final/' + name + '.mp4'
-            else:
-                name='final/' + name + '.mp4'
+            name='final/' + name + '.mp4'
 
             audio = AudioFileClip('cache/teste1.mp3')
             video = VideoFileClip('cache/teste.mp4')
@@ -70,6 +69,9 @@ class Controller:
             if not os.path.exists('final'):
                 os.makedirs('final')
             
+            if name == "":
+                name = str(file.title)
+            
             name = name + '.mp4'
 
             video.download('final', filename=name)
@@ -79,15 +81,22 @@ class Controller:
             if not os.path.exists('final'):
                 os.makedirs('final')
             
+            if name == "":
+                name = str(file.title)
+            
             name = name + '.mp3'
 
             audio.download('final', filename=name)
     
 
-    def download_audio(file, name): ##acabar casa
+    def download_audio(self, file, name): ##acabar casa
         file = Playlist(file)
-
-        location = 'final/' + name
+        
+        if name == "":
+                self.playlist_count += 1
+                location = 'final/playlist_' + str(self.playlist_count)
+        else:
+            location = 'final/' + name
 
         if not os.path.exists(location):
                 os.makedirs(location)
@@ -95,8 +104,6 @@ class Controller:
         for i in file.videos:
             
             audio = max(filter(lambda s: Controller.get_abr(s), filter(lambda s: s.type == 'audio', i.streams)), key=Controller.get_abr)
-
-            ##audio = i.streams.get_audio_only()
 
             name_mp3 = str(i.title) + '.mp3'
 
