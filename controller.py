@@ -1,6 +1,6 @@
 from view import *
 
-from pytubefix import YouTube
+from pytubefix import YouTube, Playlist
 from moviepy.editor import AudioFileClip, VideoFileClip
 import shutil
 import os
@@ -83,5 +83,21 @@ class Controller:
 
             audio.download('final', filename=name)
     
-    def download_audio(file): ##acabar casa
-        file.video
+
+    def download_audio(file, name): ##acabar casa
+        file = Playlist(file)
+
+        location = 'final/' + name
+
+        if not os.path.exists(location):
+                os.makedirs(location)
+
+        for i in file.videos:
+            
+            audio = max(filter(lambda s: Controller.get_abr(s), filter(lambda s: s.type == 'audio', i.streams)), key=Controller.get_abr)
+
+            ##audio = i.streams.get_audio_only()
+
+            name_mp3 = str(i.title) + '.mp3'
+
+            audio.download(location, filename=name_mp3)

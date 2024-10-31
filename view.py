@@ -8,7 +8,9 @@ import shutil
 import os
 
 class View:
-    def __init__(self, master): 
+    def __init__(self, master):
+        
+
         self.master = master
 
         #Frame
@@ -52,7 +54,7 @@ class View:
         ##botaoambos = tk.Button(self.pl_janela, text="Download do video e do audio", width= 25, height=5, command=self.ambos)
         botaoaudio = tk.Button(self.pl_janela, text = "Download do audio", width= 25, height=5, command=self.audio)
         ##botaovideo = tk.Button(self.pl_janela, text = "Download do video", width= 25, height=5, command=self.video)
-       ## botaoplaylist = tk.Button(self.pl_janela, text = "Playlist", width=25, height=5, command=None)
+        botaoalone = tk.Button(self.pl_janela, text = "Só um video", width=25, height=5, command=self.inicio)
 
         #Text box
         self.texto = tk.Entry(self.pl_janela, width=100)
@@ -65,7 +67,7 @@ class View:
         ##botaoambos.place(x=600,y=400, anchor=tk.CENTER)
         botaoaudio.place(x=600, y=400, anchor=tk.CENTER)
         ##botaovideo.place(x=300, y=400, anchor=tk.CENTER)
-        ##botaoplaylist.place(x=600, y=650, anchor=tk.CENTER)
+        botaoalone.place(x=600, y=650, anchor=tk.CENTER)
 
         #vars
         self.bvideo = False
@@ -115,7 +117,6 @@ class View:
 
     def audio(self):   ##fazer isto em casa!!!
         self.file = self.texto.get()
-        self.lista = Controller.Controller.list_res_audio(self.file)
 
         self.nova_janela = tk.Toplevel(self.master)
 
@@ -135,7 +136,8 @@ class View:
         #label
         label = tk.Label(frame2, text="Nome do ficheiro",font=('areal black',13), bg='#FFFFFF')
 
-        if self.link_playlist != True: 
+        if self.link_playlist != True:
+            self.lista = Controller.Controller.list_res_audio(self.file)
 
             #listbox
             self.listbox = tk.Listbox(frame2, width= 50, height= 20)
@@ -205,7 +207,7 @@ class View:
 
     def download(self):
         if self.link_playlist:  ##acaaber casa
-            None
+            Controller.Controller.download_audio(self.file, self.name.get())
         else:
 
             opcion = self.listbox.curselection()
@@ -232,8 +234,16 @@ class View:
 
             Controller.Controller.download_ambos(self.file, itagvideo, itagaudio, self.bvideo, self.baudio, self.name.get())
 
-            self.bvideo = False
-            self.baudio = False
-            self.link_playlist = False
+            
 
         self.nova_janela.destroy()
+
+        self.bvideo = False
+        self.baudio = False
+        self.link_playlist = False
+
+    
+
+    def inicio(self):
+        self.pl_janela.destroy()
+        self.__init__(self.master)

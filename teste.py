@@ -10,7 +10,28 @@ def get_resolution(s):
     return int(s.abr.replace('kbps', ''))
 
 
-print(file)
+lista=[]
+
+
+
+
+for i in file.videos:
+    for j in i.streams:
+
+        video = max(
+    filter(lambda s: get_resolution(s),
+           filter(lambda s: s.type == 'audio', j)),
+    key=get_resolution
+)
+        lista.append(video)
+
+lista.sort(key=get_resolution, reverse=True)
+
+i = 1
+for j in lista:
+    print(i, ' - ', j)
+    i+=1
+
 
 '''
 name = str(file.title)
