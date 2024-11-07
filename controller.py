@@ -8,7 +8,6 @@ import os
 class Controller:
     def __init__(self, master):
         self.view = View(master)
-        self.playlist_count = 0
 
     def get_resolution(s):
         return int(s.resolution[:-1])
@@ -89,12 +88,14 @@ class Controller:
             audio.download('final', filename=name)
     
 
-    def download_audio(self, file, name): ##acabar casa
-        file = Playlist(file)
+    def download_audio(file1, name): ##acabar casa
+        file = Playlist(file1)
         
+        print(file.title)
+
         if name == "":
-                self.playlist_count += 1
-                location = 'final/playlist_' + str(self.playlist_count)
+                name = str(file.title)
+                location = 'final/' + name
         else:
             location = 'final/' + name
 
@@ -102,9 +103,13 @@ class Controller:
                 os.makedirs(location)
 
         for i in file.videos:
-            
-            audio = max(filter(lambda s: Controller.get_abr(s), filter(lambda s: s.type == 'audio', i.streams)), key=Controller.get_abr)
+            lista = []
+            for j in filter(lambda s: Controller.get_abr(s), filter(lambda s: s.type == 'audio', i.streams)):
+                lista.append(j)
+
+            lista.sort(key=Controller.get_abr, reverse=True)
+            audio = lista.pop(0)
 
             name_mp3 = str(i.title) + '.mp3'
-
             audio.download(location, filename=name_mp3)
+

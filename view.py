@@ -183,7 +183,7 @@ class View:
         botao = tk.Button(frame1, text="Selecionar qualidade", width= 25, height=5, command=self.download)
 
         #Text box
-        self.name = tk.Entry(frame1, width=100)
+        self.texto = tk.Entry(frame1, width=100)
 
         #label
         label = tk.Label(frame1, text="Nome do ficheiro",font=('areal black',13), bg='#FFFFFF')
@@ -207,6 +207,7 @@ class View:
 
     def download(self):
         if self.link_playlist:  ##acaaber casa
+
             Controller.Controller.download_audio(self.file, self.name.get())
         else:
 

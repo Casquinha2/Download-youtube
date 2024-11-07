@@ -10,10 +10,12 @@ def get_resolution(s):
     return int(s.abr.replace('kbps', ''))
 
 
+print(file.title)
+
 lista=[]
 
 
-
+'''
 
 for i in file.videos:
     for j in i.streams:
@@ -33,7 +35,6 @@ for j in lista:
     i+=1
 
 
-'''
 name = str(file.title)
 
 
