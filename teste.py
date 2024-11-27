@@ -9,8 +9,11 @@ file = Playlist("https://youtube.com/playlist?list=PLeFKoQ75KesBk7F1sJGSG5hEiPcw
 def get_resolution(s):
     return int(s.abr.replace('kbps', ''))
 
+for i in file.video_urls:
+    i = YouTube(i)
+    t = i.streams.mime_type('audio/mp4')
+    print (t)
 
-print(file.title)
 
 lista=[]
 
